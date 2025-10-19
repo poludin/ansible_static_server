@@ -7,8 +7,8 @@
 
 ## Содержание
 
-- `– Dockerfile`  
-- `– docker-compose.yml`
+- `Dockerfile`  
+- `docker-compose.yml`
 - `roles/` – Ansible роли:
   - `users` – управление пользователями и группами
   - `zsh_ohmyzsh` – установка Zsh и Oh My Zsh
