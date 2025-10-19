@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    server_name _;
+
+    access_log /var/log/nginx/images_access.log;
+    error_log /var/log/nginx/images_error.log;
+
+    location /images/ {
+        alias {{ static_path }}/;
+        autoindex on;
+        gzip {{ gzip_static | default('on') }};
+        expires {{ cache_max_age | default('1h') }};
+        add_header Cache-Control "public";
+    }
+}

@@ -1,0 +1,14 @@
+# список кастомных групп, которые будут созданы
+custom_groups:
+  - photographers
+  - viewers
+
+# список пользователей для создания/удаления
+users:
+  - name: tester
+    shell: /bin/bash
+    state: present
+    pubkey: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    password: ""   # без пароля, вход только по ключу
+    groups:
+      - sudo

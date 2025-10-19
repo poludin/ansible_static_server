@@ -1,0 +1,36 @@
+- name: Ensure nginx package is installed
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Create static directory
+  file:
+    path: "{{ static_path }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Deploy nginx site
+  template:
+    src: nginx_site.j2
+    dest: /etc/nginx/sites-available/static_images
+    mode: '0644'
+
+- name: Enable site
+  file:
+    src: /etc/nginx/sites-available/static_images
+    dest: /etc/nginx/sites-enabled/static_images
+    state: link
+
+- name: Remove default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Ensure nginx is started
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes

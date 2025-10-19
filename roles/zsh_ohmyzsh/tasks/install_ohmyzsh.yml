@@ -1,0 +1,27 @@
+- name: Ensure user's default shell is zsh
+  user:
+    name: "{{ item.name }}"
+    shell: /bin/zsh
+  when: item.shell is defined and 'zsh' in item.shell
+  loop: "{{ users }}"
+
+- name: Ensure zsh is installed (package role ensures it)
+  command: which zsh
+  register: zsh_exists
+  ignore_errors: yes
+
+- name: Install Oh My Zsh for user (clone)
+  become: true
+  become_user: "{{ item.name }}"
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "/home/{{ item.name }}/.oh-my-zsh"
+    update: yes
+
+- name: Copy zshrc from oh-my-zsh template
+  become: true
+  become_user: "{{ item.name }}"
+  copy:
+    src: /home/{{ item.name }}/.oh-my-zsh/templates/zshrc.zsh-template
+    dest: /home/{{ item.name }}/.zshrc
+    remote_src: yes

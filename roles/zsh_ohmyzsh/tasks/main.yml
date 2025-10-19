@@ -1,0 +1,6 @@
+- name: Install Oh My Zsh for users with zsh shell
+  when: users is defined
+  include_tasks: install_ohmyzsh.yml
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"

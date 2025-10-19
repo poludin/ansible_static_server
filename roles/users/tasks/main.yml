@@ -1,0 +1,28 @@
+- name: Ensure custom groups exist
+  group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ custom_groups | default([]) }}"
+
+- name: Ensure users state
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    groups: "{{ item.groups | default([]) | join(',') }}"
+    password: "{{ item.password | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+    createhome: yes
+    append: yes
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Setup authorized_keys for users (if pubkey provided)
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.pubkey }}"
+    state: present
+  when: item.pubkey is defined and item.pubkey | length > 0
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"

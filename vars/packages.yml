@@ -1,0 +1,16 @@
+extra_packages:
+  - htop
+  - ncdu
+  - git
+  - nano
+  - unzip
+  - curl
+  - nginx
+  - zsh
+  - python3-pip
+  - python3-venv
+  - openssh-server
+  - tar
+  - gzip
+  - sudo
+  - ca-certificates

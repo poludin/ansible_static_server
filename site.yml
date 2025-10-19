@@ -1,0 +1,14 @@
+- hosts: web
+  become: true
+  vars_files:
+    - vars/packages.yml
+    - vars/users.yml
+    - vars/nginx.yml
+
+  roles:
+    - packages
+    - users
+    - zsh_ohmyzsh
+    - ssh_hardening
+    - nginx
+    - deploy_static

@@ -1,0 +1,51 @@
+- name: Ensure python3, pip and venv are installed
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - python3-venv
+    state: present
+    update_cache: yes
+
+- name: Create virtual environment for Python tools
+  ansible.builtin.command:
+    cmd: python3 -m venv /opt/venv
+  args:
+    creates: /opt/venv/bin/activate
+
+- name: Install gdown in virtual environment
+  pip:
+    name: gdown
+    virtualenv: /opt/venv
+    virtualenv_python: python3
+
+- name: Download images archive from Google Drive using gdown
+  command: /opt/venv/bin/gdown --id {{ static_gdrive_id }} -O /tmp/images.tar.gz
+  args:
+    creates: /tmp/images.tar.gz
+
+- name: Check if images archive exists
+  ansible.builtin.stat:
+    path: /tmp/images.tar.gz
+  register: images_archive
+
+- name: Fallback try curl download if gdown failed
+  command: bash -lc "curl -L 'https://docs.google.com/uc?export=download&id={{ static_gdrive_id }}' -o /tmp/images.tar.gz"
+  args:
+    creates: /tmp/images.tar.gz
+  failed_when: false
+  when: not images_archive.stat.exists
+
+- name: Extract archive to static path
+  unarchive:
+    src: /tmp/images.tar.gz
+    dest: "{{ static_path }}"
+    remote_src: yes
+
+- name: Ensure ownership and permissions
+  file:
+    path: "{{ static_path }}"
+    owner: www-data
+    group: www-data
+    recurse: yes
+    mode: '0755'

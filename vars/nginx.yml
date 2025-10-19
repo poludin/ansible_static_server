@@ -1,0 +1,9 @@
+static_path: /var/www/static_images
+images_url_path: /images
+cache_max_age: 3600
+gzip_static: true
+log_format_name: main
+# Google Drive file id (from the share URL of the archive)
+# Example share link: https://drive.google.com/file/d/1L9hsq9ZFB5VbXYJ3kEKH47x9nhxxZEnI
+# Then static_gdrive_id: "1L9hsq9ZFB5VbXYJ3kEKH47x9nhxxZEnI"
+static_gdrive_id: "1L9hsq9ZFB5VbXYJ3kEKH47x9nhxxZEnI"

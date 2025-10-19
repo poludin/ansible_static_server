@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    container_name: static_test
+    ports:
+      - "2222:22" # SSH
+      - "8080:80" # HTTP (nginx will listen on 80)
+    tty: true

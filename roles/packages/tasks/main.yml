@@ -1,0 +1,9 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install extra packages
+  apt:
+    name: "{{ extra_packages }}"
+    state: present
