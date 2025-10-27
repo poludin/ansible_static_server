@@ -10,8 +10,8 @@
     dest: /etc/ssh/sshd_config
     owner: root
     group: root
-    mode: '0644'
-  notify: Restart ssh
+    mode: '0600'
+  notify: Reload ssh
 
 - name: Ensure SSH service is running
   service:

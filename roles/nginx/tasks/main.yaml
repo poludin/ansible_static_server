@@ -17,20 +17,23 @@
     src: nginx_site.j2
     dest: /etc/nginx/sites-available/static_images
     mode: '0644'
+  notify: Reload nginx
 
 - name: Enable site
   file:
     src: /etc/nginx/sites-available/static_images
     dest: /etc/nginx/sites-enabled/static_images
     state: link
+  notify: Reload nginx
 
 - name: Remove default site
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
+  notify: Reload nginx
 
-- name: Ensure nginx is started
+- name: Ensure nginx is running and enabled
   service:
     name: nginx
-    state: restarted
+    state: started
     enabled: yes
